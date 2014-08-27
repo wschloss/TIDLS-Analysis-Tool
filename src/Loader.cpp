@@ -3,7 +3,7 @@
 Loader::Loader() {
 }
 
-void Loader::importConstantsFromFile(string fileName, map<string,double> dataMap) {
+void Loader::importConstantsFromFile(const string &fileName, map<string,double> &dataMap) {
 	// Open file, read data, store in map
 	ifstream input(fileName);
 	if (!input) {
@@ -32,15 +32,10 @@ void Loader::importConstantsFromFile(string fileName, map<string,double> dataMap
 		tokens.clear();
 	}
 
-	// PRINTING FOR DEBUGGING PURPOSES
-	typedef map<string,double>::iterator it_type;
-	cout << "The following constants where read:\n " << endl;
-	for (it_type it = dataMap.begin(); it != dataMap.end(); it++) {
-		cout << it->first << " = " << it->second << endl;
-	}
+	input.close();
 
 }
 
-void Loader::importDataFromFile(string fileName, map<double,vector<double> > dataMap) {
+void Loader::importDataFromFile(const string &fileName, map<double,vector<double> > &dataMap) {
 	cout << "\nLoader::importDataFromFile() is not implemented" << endl;
 }

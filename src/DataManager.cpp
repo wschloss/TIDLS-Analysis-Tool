@@ -20,6 +20,12 @@ void DataManager::loadConstants() {
 
 	loader->importConstantsFromFile(fileName, constants);
 
+	typedef map<string,double>::iterator it_type;
+	cout << "The following constants where read:\n " << endl;
+	for (it_type it = constants.begin(); it != constants.end(); it++) {
+		cout << it->first << " = " << it->second << endl;
+	}
+
 }
 
 void DataManager::loadData() {

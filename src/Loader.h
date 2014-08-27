@@ -23,8 +23,8 @@ class Loader {
 public:
 	Loader();
 
-	void importConstantsFromFile(string fileName, map<string,double> dataMap);
-	void importDataFromFile(string fileName, map<double,vector<double> > dataMap);
+	void importConstantsFromFile(const string &fileName, map<string,double> &dataMap);
+	void importDataFromFile(const string &fileName, map<double,vector<double> > &dataMap);
 
 private:
 
