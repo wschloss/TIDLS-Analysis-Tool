@@ -11,6 +11,19 @@ Author: Walter Schlosser
 
 #pragma once
 
+#include <map>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
 class Loader {
+public:
+	Loader();
+
+	void importConstantsFromFile(string fileName, map<string,double> dataMap);
+	void importDataFromFile(string fileName, map<double,vector<double> > dataMap);
+
+private:
 
 };

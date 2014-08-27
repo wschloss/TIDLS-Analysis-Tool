@@ -2,6 +2,7 @@
 #include "Analyzer.h"
 #include "Generator.h"
 #include "Loader.h"
+#include "DataManager.h"
 
 using namespace std;
 
@@ -16,8 +17,8 @@ int main(int argc, char const *argv[]) {
 	Generator* generator = NULL;
 	// Analyzes data imported from txt file
 	Analyzer* analyzer = NULL;
-	// Loads user model data (currently loads constants)
-	Loader* loader = NULL;
+	// Stores model data, constants and data for the fits
+	DataManager* dataManager = NULL;
 
 	cout << endl;
 	cout << "/********* TIDLS Analyzer *********/" << endl;
@@ -25,9 +26,9 @@ int main(int argc, char const *argv[]) {
 	// Main loop
 	while(!done) {
 		// Prompt user to select option
-		while (choice != 1 && choice != 2 && choice != 3 && choice != 0) {
+		while (!(choice > -1 && choice < 4)) {
 			cout << endl;
-			cout << "Enter 1 to load constants, 2 to generate simulated data, or 3 to analyze data (0 to quit): ";
+			cout << "Enter 1 to load data, 2 to generate simulated data, or 3 to analyze data (0 to quit): ";
 			cin >> choice;
 		}
 		// Perform desired operations
@@ -38,7 +39,11 @@ int main(int argc, char const *argv[]) {
 
 			case 1:
 			choice = -1;
-			cout << "\nThe desired option is not yet implemented" << endl;
+			// Reinitialize dataManager
+			if (dataManager != NULL)
+				delete dataManager;
+			// Prompts for data files
+			dataManager = new DataManager();
 			break;
 
 			case 2:
@@ -62,8 +67,8 @@ int main(int argc, char const *argv[]) {
 	if (analyzer != NULL) {
 		delete analyzer;
 	}
-	if (loader != NULL) {
-		delete loader;
+	if (dataManager != NULL) {
+		delete dataManager;
 	}
 
 	return 0;
