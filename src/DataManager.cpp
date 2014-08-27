@@ -20,8 +20,9 @@ void DataManager::loadConstants() {
 
 	loader->importConstantsFromFile(fileName, constants);
 
+	//PRINTS MAP OF CONSTANTS FOR DEBUGGING
 	typedef map<string,double>::iterator it_type;
-	cout << "The following constants where read:\n " << endl;
+	cout << "The following constants were loaded:\n " << endl;
 	for (it_type it = constants.begin(); it != constants.end(); it++) {
 		cout << it->first << " = " << it->second << endl;
 	}
@@ -35,5 +36,18 @@ void DataManager::loadData() {
 	cin >> fileName;
 
 	loader->importDataFromFile(fileName, lifetimeData);
+
+	//PRINTS MAP OF DATA FOR DEBUGGING
+	typedef map<double,vector<double> >::iterator it_type;
+	cout << "The following data was loaded:\n " << endl;
+	for (it_type it = lifetimeData.begin(); it != lifetimeData.end(); it++) {
+		cout << "deltaN = " << it->first << ", ";
+		//Print out vector of lifetimes
+		for (int i = 0; i < (it->second).size(); i++) {
+			cout << "t" << i+1 << " = " << it->second[i] << ", ";
+		}
+		
+		cout << endl;
+	}
 
 }

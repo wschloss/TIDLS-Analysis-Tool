@@ -1,3 +1,4 @@
-constant1 755.43
-constant2 883773.8
-constant3 98.377772
+The format is currently: Name value (this first line is thrown out)
+c 755.43
+k 883773.8
+t0 98.377772
