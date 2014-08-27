@@ -1,0 +1,3 @@
+constant1 755.43\n
+constant2 883773.8
+constant3 98.377772
