@@ -32,6 +32,7 @@ double Egap(double temp) {
 	return ( Egap0 - (alpha*pow(temp,2.0))/(temp + beta) );
 }
 
+// 	POSSIBLE MISTAKE HERE IN m0 POWER, CHECK 1.27A PG 23
 double me(double temp) {
 	/*
 	define constants from map:
@@ -203,6 +204,11 @@ double tp0(double temp, double Nt, double sigmaP) {
 	return pow(Nt*sigmaP*vthh(temp),-1.0) * pow(temp/300.0,-1.0/2.0);
 }
 
+/*
+NOTE THAT THE FOLLOWING p AND n CONCENTRATIONS
+DO NOT TAKE FREEZE OUT OR INTRINSIC CONDUCTION
+PIECEWISE EXPRESSIONS INTO ACCOUNT.
+*/	
 double p0(double temp, double NA) {
 	/*
 	no constants defined from map
