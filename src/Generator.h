@@ -9,8 +9,17 @@ Author: Walter Schlosser
 
 #pragma once
 
-#include "Equations.h"
+#include "EquationManager.h"
+#include <map>
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 class Generator {
+public:
+	Generator(map<string,double> constantsMap);
 
+private:
+	EquationManager* equations;
 };

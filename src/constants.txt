@@ -1,4 +1,23 @@
 The format is currently: Name value (this first line is thrown out)
-c 755.43
-k 883773.8
-t0 98.377772
+Egap0 5
+alpha 5
+beta 5e3
+m0 7.5
+see 8.776
+ml 10.7e-4
+a 1
+b 2
+c 4
+d 87
+e 93
+f 8.776e-12
+g 98.88
+h 93
+i 73.22
+NN 98e13
+Ev0 8.76
+Ec0 82.23344
+EABoron 89.8e-13
+kb 10e3
+vthe0 8
+vthh0 9

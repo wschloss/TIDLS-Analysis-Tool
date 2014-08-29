@@ -40,8 +40,6 @@ void Loader::importConstantsFromFile(const string &fileName, map<string,double> 
 }
 
 void Loader::importDataFromFile(const string &fileName, map<double,vector<double> > &dataMap) {
-	cout << "\nLoader::importDataFromFile() is not implemented" << endl;
-
 	// Open file, read data, store in map
 	ifstream input(fileName);
 	if (!input) {

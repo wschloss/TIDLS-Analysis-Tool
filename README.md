@@ -16,7 +16,7 @@ Complete:
 
 Todo:
 - Add additional equations necessary for fitting
-- Simulated lifetime data can be generated and exported to a text file (Requires constant list first)
+- Simulated lifetime data can be generated and exported to a text file (Requires constant list first, the current constant list has wrong values)
 - Loaded data can be analyzed and data for tn0, k, and chi^2 is exported
 	-many possible subtasks here
 

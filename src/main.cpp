@@ -48,7 +48,14 @@ int main(int argc, char const *argv[]) {
 
 			case 2:
 			choice = -1;
-			cout << "\nThe desired option is not yet implemented" << endl;
+			if (dataManager == NULL || dataManager->getConstants().size() == 0) {
+				cout << "\nYou must first load constants for simulation\n";
+				break;
+			}
+			if (generator != NULL)
+				delete generator;
+			// Will ask about output file name, temp range, etc.
+			generator = new Generator(dataManager->getConstants());
 			break;
 
 			case 3:
