@@ -32,7 +32,6 @@ double Egap(double temp) {
 	return ( Egap0 - (alpha*pow(temp,2.0))/(temp + beta) );
 }
 
-// 	POSSIBLE MISTAKE HERE IN m0 POWER, CHECK 1.27A PG 23
 double me(double temp) {
 	/*
 	define constants from map:
@@ -48,7 +47,7 @@ double me(double temp) {
 
 	double result = 0;
 
-	result = m0 * pow(6.0,2.0/3.0) * pow(pow(see * (Egap0)/(Egap(temp)),2.0) * ml,1.0/3.0);
+	result = m0 * pow(6.0,2.0/3.0) * pow(pow(see * (Egap0)/(Egap(temp)),2.0) * ml/m0,1.0/3.0);
 
 	return result;
 }
@@ -125,7 +124,7 @@ double Ec(double temp) {
 	return ( Ec0 - (Egap0 - Egap(temp))/2.0 );
 }
 
-/********** WHAT IS EABORON? ***********/
+/********** NAMED EABORON SINCE ASSUMING THE DOPANT IS BORON ***********/
 double C(double temp, double NA){
 	/*
 	define constants from map:
@@ -193,7 +192,10 @@ double tn0(double temp, double Nt, double sigmaN) {
 	no constants defined from map
 	*/
 
-	return pow(Nt*sigmaN*vthe(temp),-1.0) * pow(temp/300.0,-1.0/2.0);
+	return pow(Nt*sigmaN*vthe(temp),-1.0);
+
+	//THIS EXPRESSION FROM MATHEMATICA APPEARS INCORRECT BY PG 85 IN THE BOOK
+	//return pow(Nt*sigmaN*vthe(temp),-1.0) * pow(temp/300.0,-1.0/2.0);
 }
 
 double tp0(double temp, double Nt, double sigmaP) {
@@ -201,7 +203,9 @@ double tp0(double temp, double Nt, double sigmaP) {
 	no constants defined from map
 	*/
 
-	return pow(Nt*sigmaP*vthh(temp),-1.0) * pow(temp/300.0,-1.0/2.0);
+	return pow(Nt*sigmaP*vthh(temp),-1.0);
+	//THIS EXPRESSION FROM MATHEMATICA APPEARS INCORRECT BY PG 85 IN THE BOOK
+	//return pow(Nt*sigmaP*vthh(temp),-1.0) * pow(temp/300.0,-1.0/2.0);
 }
 
 /*
