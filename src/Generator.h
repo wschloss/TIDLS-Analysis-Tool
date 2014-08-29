@@ -9,6 +9,8 @@ Author: Walter Schlosser
 
 #pragma once
 
+#include "Equations.h"
+
 class Generator {
 
 };

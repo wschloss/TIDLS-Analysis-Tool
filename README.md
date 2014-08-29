@@ -12,10 +12,11 @@ Complete:
 - Basic user interaction
 - Constants can be loaded from a text file
 - Lifetime data can be loaded from a text file
+- All necessary equation definitions should be available for use (Eqns used for simulated data are done, not tested)
 
 Todo:
-- All necessary equation definitions should be available for use
-- Simulated lifetime data can be generated and exported to a text file
+- Add additional equations necessary for fitting
+- Simulated lifetime data can be generated and exported to a text file (Requires constant list first)
 - Loaded data can be analyzed and data for tn0, k, and chi^2 is exported
 	-many possible subtasks here
 
