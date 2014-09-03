@@ -17,7 +17,7 @@ Complete:
 
 Todo:
 - Add additional equations necessary for fitting
-- Generate data with the correct constants in place and plot in Mathematica to confirm the program reproduces the simulated lifetime/deltaN plots
+- Plot generatedData.txt in Mathematica to confirm the program reproduces the simulated lifetime/deltaN plots
 - Loaded data can be analyzed and data for tn0, k, and chi^2 is exported
 	-many possible subtasks here
 
@@ -26,3 +26,4 @@ Known issues:
 	in the same session, the previous data is flushed for the new
 	set of constants/data.  This may be undesirable behavior in the
 	future.
+- No validation of input values, some values passed to the generator will create an infinite loop.
