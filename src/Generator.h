@@ -32,9 +32,8 @@ private:
 	// Variables necessary to define a defect for data generation
 	double NA, Nt, Et, sigmaN, sigmaP;
 	// Define range of data generation
-	double minDeltaN;
-	double maxDeltaN;
-	double deltaNStep;
+	double minPowerN;
+	double maxPowerN;
 	double minTemp;
 	double maxTemp;
 	double tempStep;
