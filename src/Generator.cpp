@@ -65,7 +65,7 @@ void Generator::promptForDefectProperties() {
 }
 
 void Generator::promptForRangeProperties() {
-	cout << "\nYou must define the range to generate data for\n";
+	cout << "\nYou must define the range to generate data over\n";
 
 	cout << "Enter a minimum power of deltaN: ";
 	cin >> minPowerN;

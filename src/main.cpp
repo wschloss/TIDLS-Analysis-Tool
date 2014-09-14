@@ -28,7 +28,12 @@ int main(int argc, char const *argv[]) {
 		// Prompt user to select option
 		while (!(choice > -1 && choice < 4)) {
 			cout << endl;
-			cout << "Enter 1 to load data, 2 to generate simulated data, or 3 to analyze data (0 to quit): ";
+			cout << "(1) Load constants and/or data\n";
+			cout << "(2) Generate perfect data from theory\n";
+			cout << "(3) Analyze data\n";
+			cout << "(0) Quit\n";
+			cout << endl;
+			cout << "Select an option: ";
 			cin >> choice;
 		}
 		// Perform desired operations
