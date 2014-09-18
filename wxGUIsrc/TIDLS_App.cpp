@@ -31,18 +31,21 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 : wxFrame(NULL, wxID_ANY, title, pos, size) {
 
 	//Init and add buttons
-	loadConstantsButton = new wxButton(this, BUTTON_LoadConstants, "Load Constants", wxPoint(0,50), wxDefaultSize, 0);
-	loadDataButton = new wxButton(this, BUTTON_LoadData, "Load Data", wxPoint(0,75), wxDefaultSize, 0);
-	generateButton = new wxButton(this, BUTTON_Generate, "Generate Data", wxPoint(0,100), wxDefaultSize, 0);
-	analyzeButton = new wxButton(this, BUTTON_Analyze, "Analyze Data", wxPoint(0,125), wxDefaultSize, 0);
+	loadConstantsButton = new wxButton(this, BUTTON_LoadConstants, "Load Constants", wxDefaultPosition, wxDefaultSize, 0);
+	loadDataButton = new wxButton(this, BUTTON_LoadData, "Load Data", wxDefaultPosition, wxDefaultSize, 0);
+	generateButton = new wxButton(this, BUTTON_Generate, "Generate Data", wxDefaultPosition, wxDefaultSize, 0);
+	analyzeButton = new wxButton(this, BUTTON_Analyze, "Analyze Data", wxDefaultPosition, wxDefaultSize, 0);
 
 	//Init and add the operation log
-	operationLog = new wxTextCtrl(this, wxID_ANY, "TIDLS Analyzer Initialized\n", wxPoint(675,75), wxSize(200,450), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+	operationLog = new wxTextCtrl(this, wxID_ANY, "TIDLS Analyzer Initialized\n", wxDefaultPosition, wxSize(200,450), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
 
 	//Init and add the place holders for what will be graphs
-	tauGraph = new wxTextCtrl(this, wxID_ANY, "This will be a graph of tau0 vs Et", wxPoint(150,50), wxSize(250,250), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
-	crossGraph = new wxTextCtrl(this, wxID_ANY, "This will be a graph of k vs Et", wxPoint(400,50), wxSize(250,250), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
-	lifetimeGraph = new wxTextCtrl(this, wxID_ANY, "This will be a graph of the lifetime vs injection for different temperatures", wxPoint(150,300), wxSize(500,250), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+	tauGraph = new wxTextCtrl(this, wxID_ANY, "This will be a graph of tau0 vs Et", wxDefaultPosition, wxSize(250,250), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+	crossGraph = new wxTextCtrl(this, wxID_ANY, "This will be a graph of k vs Et", wxDefaultPosition, wxSize(250,250), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+	lifetimeGraph = new wxTextCtrl(this, wxID_ANY, "This will be a graph of the lifetime vs injection for different temperatures", wxDefaultPosition, wxSize(500,250), wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+
+	//Create layout with sizers
+	SetSizer(MainFrame::createLayout());
 
 	//Create Menu Bar
 	wxMenu *menuFile = new wxMenu;
@@ -61,6 +64,47 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	//Create status bar
 	CreateStatusBar();
 	SetStatusText("TIDLS data analyzing tool");
+}
+
+//Layout creation
+wxSizer* MainFrame::createLayout() {
+	// buttons area
+	wxBoxSizer* buttons = new wxBoxSizer(wxVERTICAL);
+
+	buttons->Add(loadConstantsButton,0,wxEXPAND,0);
+	buttons->Add(loadDataButton,0,wxEXPAND,0);
+	buttons->Add(generateButton,0,wxEXPAND,0);
+	buttons->Add(analyzeButton,0,wxEXPAND,0);
+
+	// tau and k graphs area
+	wxBoxSizer* analysisGraphs = new wxBoxSizer(wxHORIZONTAL);
+
+	analysisGraphs->Add(tauGraph,0,0,0);
+	analysisGraphs->Add(crossGraph,0,0,0);
+
+	// lifetime graph area
+	wxBoxSizer* dataGraph = new wxBoxSizer(wxVERTICAL);
+
+	dataGraph->Add(lifetimeGraph,0,0,0);
+
+	// Link graph areas into one
+	wxBoxSizer* graphArea = new wxBoxSizer(wxVERTICAL);
+
+	graphArea->Add(analysisGraphs,0,0,0);
+	graphArea->Add(dataGraph,0,0,0);
+
+	// link three aread horizontally
+	wxBoxSizer* windowSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	windowSizer->Add(buttons,0,wxEXPAND | wxALL,20);
+	windowSizer->Add(graphArea,0,wxEXPAND | wxALL,10);
+	windowSizer->Add(operationLog,0,wxEXPAND | wxALL,20);
+
+	// Access window size
+	windowSizer->SetSizeHints(this);
+
+	return windowSizer;
+
 }
 
 // Main frame event handlers

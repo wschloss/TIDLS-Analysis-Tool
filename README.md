@@ -42,4 +42,3 @@ Known issues
 	set of constants/data.  This may be undesirable behavior in the
 	future.
 - No validation of input values, some values passed to the generator will create an infinite loop.
--GUI Layout and sizing should be refactored to use wxWidgets sizer classes
