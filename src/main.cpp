@@ -65,7 +65,14 @@ int main(int argc, char const *argv[]) {
 
 			case 3:
 			choice = -1;
-			cout << "\nThe desired option is not yet implemented" << endl;
+			cout << "\nThe desired option is not yet implemented\n" << endl;
+			if (dataManager == NULL || dataManager->getConstants().size() == 0 || dataManager->getData().size() == 0) {
+				cout << "\nYou must first load constants AND data for analysis.\n";
+				break;
+			}
+			if (analyzer != NULL)
+				delete analyzer;
+			analyzer = new Analyzer(dataManager->getConstants(), dataManager->getData());
 			break;
 		}
 

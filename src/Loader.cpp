@@ -7,7 +7,7 @@ void Loader::importConstantsFromFile(const string &fileName, map<string,double> 
 	// Open file, read data, store in map
 	ifstream input(fileName);
 	if (!input) {
-		cerr << "Error opening file: " << fileName << ".\n";
+		cerr << "Error opening file: " << fileName << "\n";
 		exit(1);
 	}
 

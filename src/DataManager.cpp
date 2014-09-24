@@ -16,7 +16,8 @@ void DataManager::loadConstants() {
 	// prompt user for file name
 	string fileName;
 	cout << "\nEnter the file name containing values for constants (or 0 to skip): ";
-	cin >> fileName;
+	cin.sync();
+	getline(cin, fileName);
 
 	if (fileName == "0") {
 		cout << "\nNo values for constants were loaded.\n";
@@ -38,7 +39,8 @@ void DataManager::loadData() {
 	// prompt user for file name
 	string fileName;
 	cout << "\nEnter the file name containing data for lifetime values (or 0 to skip): ";
-	cin >> fileName;
+	cin.sync();
+	getline(cin, fileName);
 
 	if (fileName == "0") {
 		cout << "\nNo lifetime data was loaded.\n";
