@@ -1,16 +1,68 @@
 #include "Analyzer.h"
+vector<real> Analyzer::data, Analyzer::deltaN;
+real Analyzer::Et, Analyzer::temp, Analyzer::NA;
+EquationManager* Analyzer::equations;
 
-Analyzer::Analyzer(map<string, double> constantsMap, map<double,vector<double> > dataMap) {
+Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > lifetimeData) {
 	equations = new EquationManager(constantsMap);
 	NA = 10e16;
+	deltaN = lifetimeData[0];
 
-	runFit(dataMap);
+	EtIt = 100;
+	// Number of temperatures (plus deltaN)
+	int tempLength = lifetimeData.size();
+
+	// iterate over each temperature
+	for (int i = 1; i < tempLength; i++) {
+		Et = 0;
+		temp = i * 100; // x100 for [100C,200C,300C...]
+
+		gap = 1.6;
+		inc = gap / EtIt;
+
+		//iterate over each Et
+		for (int j = 0; j < EtIt; j++) {
+			data = lifetimeData[i];
+			runFit();
+
+			cout << "Ran a fit. ";
+
+			tn0 = x[0];
+			k = x[1];
+
+			// Find chi^2 value for the fit
+			// sum of (observed - expected)^2 / expected
+			chi2 = 0;
+			for (int z = 0; z < m; z++) {
+				double expected = tSRH(x, deltaN[z], Et);
+				double numerator = (data[z] - expected);
+				chi2 += numerator * numerator / expected;
+			}
+			
+			// Put these into arrays for later use
+			tempVec.push_back(temp);
+			EtVec.push_back(Et);
+			tn0Vec.push_back(tn0);
+			kVec.push_back(k);
+			chi2Vec.push_back(chi2);
+
+			// Increment Et
+			Et += inc;
+
+		}
+
+		cout << "FINISHED A TEMPERATURE! " << endl;
+	}	
+
+	printDataToFile();
+
 }
 
-void Analyzer::runFit(map<double,vector<double> > dataMap)
+void Analyzer::runFit()
 {
-	int i, j;
-	m = 15; // number of functions (tau_SRH data)
+	
+
+	m = data.size(); // number of functions (tau_SRH data)
 	n = 2; // number of variables (parameters)
 
 	fvec = new real[m];
@@ -19,8 +71,8 @@ void Analyzer::runFit(map<double,vector<double> > dataMap)
 
 	/*      the following starting values provide a rough fit. */
 
-	x[1 - 1] = 1.; // tau_n0
-	x[2 - 1] = 1.; // k
+	x[0] = 1.; // tau_n0
+	x[1] = 1.; // k
 
 	/* ldfjac is a positive integer not less than m which specifies */
 	/* the leading dimension of the array fjac */
@@ -49,50 +101,72 @@ void Analyzer::runFit(map<double,vector<double> > dataMap)
 		diag, &mode, &factor, &nprint, &info, &nfev, fjac, &ldfjac,
 		ipvt, qtf, wa1, wa2, wa3, wa4);
 
+	/*
 	fnorm = __minpack_func__(enorm)(&m, fvec);
 
 	printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
 	printf("      number of function evaluations%10i\n\n", nfev);
 	printf("      exit parameter                %10i\n\n", info);
 	printf("      final approximate solution\n");
-	for (j = 1; j <= n; j++) printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)x[j - 1]);
+	for (int j = 1; j <= n; j++) printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)x[j - 1]);
 	printf("\n");
 	ftol = __minpack_func__(dpmpar)(&one);
 	covfac = fnorm*fnorm / (m - n);
 	__minpack_func__(covar)(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
 	printf("      covariance\n");
-	for (i = 1; i <= n; i++) {
-		for (j = 1; j <= n; j++)
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++)
 			printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)fjac[(i - 1)*ldfjac + j - 1] * covfac);
 	}
 	printf("\n");
+	*/
 }
 
 void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *iflag)
 {
 
 	/*      subroutine fcn for lmdif (User Guide p. 124 */
-
-	int i;
-	real tmp1, tmp2, tmp3;
-	// tau_SRH data
-	real y[15] = { 1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
-		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39 };
-	assert(*m == 15 && *n == 2);
+	assert(*n == 2);
 
 	if (*iflag == 0)
 	{
 		/*      insert print statements here when nprint is positive. */
 		return;
 	}
-	for (i = 1; i <= 15; i++)
-	{
-		tmp1 = i;
-		tmp2 = 16 - i;
-		tmp3 = tmp1;
-		if (i > 8) tmp3 = tmp2;
-		// Array of functions to be minimized: (observed - expected)/sigma^2
-		fvec[i - 1] = y[i - 1] - (x[1 - 1] + tmp1 / (x[2 - 1] * tmp2 + x[3 - 1] * tmp3));
+	for (int i = 0; i < *m; i++) {
+		// Array of functions to be minimized: (observed - expected)^2/sigma^2
+		fvec[i] = data[i] - tSRH(x, deltaN[i], Et);
 	}
 	return;
+}
+
+real Analyzer::tSRH(const real *x, real deltaN, real Et) {
+	real firstExpression = (equations->p0(temp, NA) + equations->p1(temp, Et) + deltaN);
+	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
+	real denominator = equations->p0(temp, NA) + equations->n0(temp, NA) + deltaN;
+
+	return x[0] * (firstExpression + (x[1] * secondExpression)) / denominator;
+}
+
+void Analyzer::printDataToFile() {
+	// Ask for file name
+	string filename;
+	cout << "\nEnter a filename to export data (if file already exists, data is overwritten): ";
+	cin >> filename;
+
+	// Open stream and print a header on the first line
+	ofstream output(filename);
+	if (!output) {
+		cerr << "\nError creating export file.\n";
+		exit(1);
+	}
+	output << "Temperature,Et,tn0,k,chi2" << endl;
+
+	// Print out the data vectors created earlier
+	for (int i = 0; i < EtIt; i++) {
+		output << tempVec[i] << "," << EtVec[i] << "," << tn0Vec[i] << "," << kVec[i] << "," << chi2Vec[i] << endl;
+	}
+
+
+	output.close();
 }

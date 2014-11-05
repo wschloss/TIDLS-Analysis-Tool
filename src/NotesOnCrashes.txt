@@ -1,0 +1,22 @@
+The program works sometimes and crashes other times... 
+If you run the full set of data, it's guaranteed to crash at some point. 
+I ran a performance test, and, as expected, the majority of the time is 
+taken running a chi2 fit... and there's 100 iterations for each temperature. 
+Specifically, roughly 66% of the time is spent in fdjac2_ (part of the chi2
+fitting), and 33% in Analyzer::fcn (the function that defines what we're doing
+a chi2 fit to).
+
+While debugging the program, I've gotten multiple errors. For some reason the
+program hits a breakpoint right before "double kb = constants["kb"];" without a
+reason. If I continue through this breakpoint, the debugger breaks again and
+says a heap has been corrupted. I have no idea what that entails.
+
+I can continue through that again and the program will begin running fits (ever so slowly).
+I've gotten it to work with a small set of data, sometimes. The entire set of data in
+"generatedData.txt" has crashed every time I try it... although it takes a long time to try.
+I forgot the error that occurs when this crashes. I'm running it again while writing this,
+so that I can include that in this .txt document when it crashes again. I do know that it
+crashes during the fitting though (where the program spends most of its time anyway).
+
+I'm hoping that you (Walter) can look over the code and get an idea on how to optimize my code.
+I'm assuming it's memory leaks or something, but I really don't have any idea.

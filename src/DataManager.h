@@ -25,12 +25,14 @@ class DataManager {
 		void loadData();
 
 		map<string,double> getConstants() {return constants;}
-		map<double,vector<double> > getData() {return lifetimeData;}
+		vector< vector<double> > getData() {return lifetimeData;}
 
 	private:
 		Loader* loader;
 		// Key = name, value = constant value
 		map<string,double> constants;
-		// Key = deltaN, value = lifetime at different temps
-		map<double,vector<double> > lifetimeData;
+
+		// Data categorized by temps, with the first vector being deltaN
+		// i.e. { {deltaN1, deltaN2,...}, {temp11, temp12,...}, {temp21, temp22,...},... }
+		vector < vector<double> > lifetimeData;
 };
