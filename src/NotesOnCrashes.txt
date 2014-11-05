@@ -20,3 +20,13 @@ crashes during the fitting though (where the program spends most of its time any
 
 I'm hoping that you (Walter) can look over the code and get an idea on how to optimize my code.
 I'm assuming it's memory leaks or something, but I really don't have any idea.
+
+EDIT:
+
+Yep, there seem to be some problems with memory allocation. I just ran a trial and i came up with
+this error:
+
+Unhandled exception at 0x74E52F71 in TIDLS Analyzer.exe: Microsoft C++ exception: std::bad_alloc at memory location 0x001AF948.
+
+The breakpoint is right before "wa4 = new real[m]" under Analyzer::runFit(). Is this because I'm creating "new"
+variables every time? Do I need to delete these before running another iteration? I'll try it.
