@@ -28,5 +28,9 @@ this error:
 
 Unhandled exception at 0x74E52F71 in TIDLS Analyzer.exe: Microsoft C++ exception: std::bad_alloc at memory location 0x001AF948.
 
-The breakpoint is right before "wa4 = new real[m]" under Analyzer::runFit(). Is this because I'm creating "new"
-variables every time? Do I need to delete these before running another iteration? I'll try it.
+The breakpoint is right before "wa4 = new real[m]" under Analyzer::runFit(). 
+Is this because I'm creating "new"variables every time? Do I need to delete 
+these before running another iteration? I'll try it.
+
+I can continue through this exception and run more fits though. This isn't the exception 
+that completely halted my debugging earlier.
