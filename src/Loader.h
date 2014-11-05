@@ -24,7 +24,7 @@ public:
 	Loader();
 
 	void importConstantsFromFile(const string &fileName, map<string,double> &dataMap);
-	void importDataFromFile(const string &fileName, map<double,vector<double> > &dataMap);
+	void importDataFromFile(const string &fileName, vector< vector<double> > &lifetimeData);
 
 private:
 

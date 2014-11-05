@@ -49,16 +49,18 @@ void DataManager::loadData() {
 
 	loader->importDataFromFile(fileName, lifetimeData);
 
-	//PRINTS MAP OF DATA FOR DEBUGGING
-	typedef map<double,vector<double> >::iterator it_type;
+	// Number of temperatures in lifetimeData (includes deltaN)
+	int tempLength = lifetimeData.size();
+	// Number of measurements in lifetimeData
+	int mLength = lifetimeData[0].size();
+
+	//PRINTS DATA IN ORIGINAL FORMAT FOR DEBUGGING
 	cout << "\nThe following data was loaded:\n " << endl;
-	for (it_type it = lifetimeData.begin(); it != lifetimeData.end(); it++) {
-		cout << "deltaN = " << it->first << ", ";
-		//Print out vector of lifetimes
-		for (int i = 0; i < (it->second).size(); i++) {
-			cout << "t" << i+1 << " = " << it->second[i] << ", ";
+	for (int i = 0; i < mLength; i++) {
+		cout << "deltaN = " << lifetimeData[0][i] << ", ";
+		for (int j = 1; j < tempLength; j++) {
+			cout << "t" << j << " = " << lifetimeData[j][i] << ", ";
 		}
-		
 		cout << endl;
 	}
 

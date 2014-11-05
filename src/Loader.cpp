@@ -39,11 +39,11 @@ void Loader::importConstantsFromFile(const string &fileName, map<string,double> 
 
 }
 
-void Loader::importDataFromFile(const string &fileName, map<double,vector<double> > &dataMap) {
-	// Open file, read data, store in map
+void Loader::importDataFromFile(const string &fileName, vector< vector<double> > &lifetimeData) {
+	// Open file, read data, sort data into a multidimensional vector
 	ifstream input(fileName);
 	if (!input) {
-		cerr << "Error opening file: " << fileName << ".\n";
+		cerr << "Error opening file: " << fileName << "\n";
 		exit(1);
 	}
 
@@ -57,6 +57,25 @@ void Loader::importDataFromFile(const string &fileName, map<double,vector<double
 	//THROWS OUT FIRST LINE OF TXT
 	getline(input, definition);
 
+	// stream of first line
+	stream = new stringstream(definition);
+	// split line
+	while (*stream >> buffer) {
+		tokens.push_back(buffer);
+	}
+
+	// number of elements in a line
+	int m = tokens.size();
+	// fill in the 2-d vector with empty columns, so that we can assign values later
+	for (int i = 0; i < m; i++) {
+		vector<double> column;
+		lifetimeData.push_back(column);
+	}
+
+	tokens.clear();
+
+	// Sorts data into vectors categorized by temps, with the first vector being deltaN
+	// i.e. { {deltaN1, deltaN2,...}, {temp11, temp12,...}, {temp21, temp22,...},... }
 	while (getline(input, definition)) {
 		if (stream != NULL)
 			delete stream;
@@ -66,14 +85,15 @@ void Loader::importDataFromFile(const string &fileName, map<double,vector<double
 		while (*stream >> buffer) {
 			tokens.push_back(buffer);
 		}
-		// add data (deltaN->t1, t2, t3, t4, ...) to map
-		vector<double> lifetimes;
-		for (int i = 1; i < tokens.size(); i++) {
-			// Adds all lifetimes for different temps to the map key deltaN
-			lifetimes.push_back(atof(tokens[i].c_str()));
+
+		m = tokens.size();
+
+		// add data to the columns of the multidimensional vector
+		for (int i = 0; i < m; i++) {
+			lifetimeData[i].push_back( atof(tokens[i].c_str()) );
 		}
-		dataMap[atof(tokens[0].c_str())] = lifetimes;
 		
+		// For the next line, we clear the tokens and increase k
 		tokens.clear();
 	}
 
