@@ -52,7 +52,13 @@ Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > li
 		}
 
 		cout << "FINISHED A TEMPERATURE! " << endl;
-	}	
+	}
+
+	/*
+	if (equations != NULL) {
+		delete equations;
+	}
+	*/
 
 	printDataToFile();
 
@@ -96,10 +102,13 @@ void Analyzer::runFit()
 	mode = 1; // scaling, refer to User Guide p. 124 (minpack)
 	factor = 1.e2; // initial step bound, ""
 	nprint = 0; // controlled printing, ""
-	
+
 	__minpack_func__(lmdif)(&fcn, &m, &n, x, fvec, &ftol, &xtol, &gtol, &maxfev, &epsfcn,
 		diag, &mode, &factor, &nprint, &info, &nfev, fjac, &ldfjac,
 		ipvt, qtf, wa1, wa2, wa3, wa4);
+
+	// Print Debugging Information
+	cout << info;
 
 	/*
 	fnorm = __minpack_func__(enorm)(&m, fvec);
@@ -115,11 +124,24 @@ void Analyzer::runFit()
 	__minpack_func__(covar)(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
 	printf("      covariance\n");
 	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= n; j++)
-			printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)fjac[(i - 1)*ldfjac + j - 1] * covfac);
+	for (int j = 1; j <= n; j++)
+	printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)fjac[(i - 1)*ldfjac + j - 1] * covfac);
 	}
 	printf("\n");
 	*/
+	/*
+	if (fvec != NULL) {
+		delete fvec;
+	}
+	if (fjac != NULL) {
+		delete fjac;
+	}
+	if (wa4 != NULL) {
+		delete wa4;
+	}
+	*/
+	delete [] fvec, fjac, wa4;
+
 }
 
 void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *iflag)
@@ -127,7 +149,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 
 	/*      subroutine fcn for lmdif (User Guide p. 124 */
 	assert(*n == 2);
-
+	cout << "Calling fcn. ";
 	if (*iflag == 0)
 	{
 		/*      insert print statements here when nprint is positive. */
@@ -135,15 +157,21 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	}
 	for (int i = 0; i < *m; i++) {
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
+		cout << "Is it m? ";
 		fvec[i] = data[i] - tSRH(x, deltaN[i], Et);
+		cout << "Is it fvec? ";
 	}
+	cout << "fcn called. ";
 	return;
 }
 
 real Analyzer::tSRH(const real *x, real deltaN, real Et) {
+	/******************* INITIAL HEAP ERROR OCCURS HERE *********************************/
 	real firstExpression = (equations->p0(temp, NA) + equations->p1(temp, Et) + deltaN);
 	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
 	real denominator = equations->p0(temp, NA) + equations->n0(temp, NA) + deltaN;
+
+	cout << "Is it equations? ";
 
 	return x[0] * (firstExpression + (x[1] * secondExpression)) / denominator;
 }
