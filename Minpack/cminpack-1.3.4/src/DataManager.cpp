@@ -16,8 +16,7 @@ void DataManager::loadConstants() {
 	// prompt user for file name
 	string fileName;
 	cout << "\nEnter the file name containing values for constants (or 0 to skip): ";
-	//cin.sync()
-	getline(cin,fileName); //Consume \n char, cin.sync() is being weird right now
+	cin.sync();
 	getline(cin, fileName);
 
 	if (fileName == "0") {

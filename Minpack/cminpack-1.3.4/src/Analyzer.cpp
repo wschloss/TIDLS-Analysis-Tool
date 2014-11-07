@@ -1,20 +1,19 @@
 #include "Analyzer.h"
 
 
-//I have no idea why this is necessary
-//but it doesn't work without it
 vector<real> Analyzer::data, Analyzer::deltaN;
 real Analyzer::Et, Analyzer::temp, Analyzer::NA;
 EquationManager* Analyzer::equations;
 const int Analyzer::one;
 
 
-Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > lifetimeData) {
-	equations = new EquationManager(constantsMap);
-	NA = 10e16;
-	deltaN = lifetimeData[0];
 
-	EtIt = 100;
+Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > lifetimeData) {
+	this->equations = new EquationManager(constantsMap);
+	this->NA = 10e16;
+	this->deltaN = lifetimeData[0];
+
+	this->EtIt = 100;
 	// Number of temperatures (plus deltaN)
 	int tempLength = lifetimeData.size();
 
@@ -31,7 +30,7 @@ Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > li
 			data = lifetimeData[i];
 			runFit();
 
-			cout << "Ran a fit. " << endl;
+			cout << "Ran a fit. ";
 
 			tn0 = x[0];
 			k = x[1];
@@ -114,7 +113,7 @@ void Analyzer::runFit()
 		ipvt, qtf, wa1, wa2, wa3, wa4);
 
 	// Print Debugging Information
-	cout << info << endl;
+	cout << info;
 
 	/*
 	fnorm = __minpack_func__(enorm)(&m, fvec);
@@ -156,7 +155,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 
 	/*      subroutine fcn for lmdif (User Guide p. 124 */
 	assert(*n == 2);
-	cout << "Calling fcn. " << endl;
+	cout << "Calling fcn. ";
 	if (*iflag == 0)
 	{
 		/*      insert print statements here when nprint is positive. */
@@ -164,11 +163,11 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	}
 	for (int i = 0; i < *m; i++) {
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
-		cout << "Is it m? " << endl;
+		cout << "Is it m? ";
 		fvec[i] = data[i] - tSRH(x, deltaN[i], Et);
-		cout << "Is it fvec? " << endl;
+		cout << "Is it fvec? ";
 	}
-	cout << "fcn called. " << endl;
+	cout << "fcn called. ";
 	return;
 }
 
@@ -178,7 +177,7 @@ real Analyzer::tSRH(const real *x, real deltaN, real Et) {
 	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
 	real denominator = equations->p0(temp, NA) + equations->n0(temp, NA) + deltaN;
 
-	cout << "Is it equations? " << endl;
+	cout << "Is it equations? ";
 
 	return x[0] * (firstExpression + (x[1] * secondExpression)) / denominator;
 }

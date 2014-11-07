@@ -591,6 +591,7 @@
 		7F8F63A61148F51A0013EA0C /* tlmdifc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmdifc.c; path = examples/tlmdifc.c; sourceTree = "<group>"; };
 		7F8F63A81148F51A0013EA0C /* tlmstr1c.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstr1c.c; path = examples/tlmstr1c.c; sourceTree = "<group>"; };
 		7F8F63AA1148F51A0013EA0C /* tlmstrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstrc.c; path = examples/tlmstrc.c; sourceTree = "<group>"; };
+		D17882AD1A0D2E9400016DAE /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
 		D2AAC046055464E500DB518D /* libcminpack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcminpack.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -771,6 +772,7 @@
 		08FB7794FE84155DC02AAC07 /* libfnt */ = {
 			isa = PBXGroup;
 			children = (
+				D17882AD1A0D2E9400016DAE /* src */,
 				1EA5C24F158778BF00F5CFF7 /* Frameworks */,
 				1EE5E399145DA9D700F4FFF4 /* Makefiles */,
 				1EE5E371145DA91200F4FFF4 /* Data */,

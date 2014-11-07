@@ -1,7 +1,7 @@
 all: TIDLSAnalyzer clean
 
-TIDLSAnalyzer: main.o DataManager.o Loader.o Generator.o Analyzer.o 
-	g++ main.o DataManager.o Loader.o Generator.o Analyzer.o ../Minpack/cminpack-1.3.4/*.o -o TIDLS_Mac
+TIDLSAnalyzer: main.o DataManager.o Loader.o Generator.o Analyzer.o
+	g++ main.o DataManager.o Loader.o Generator.o Analyzer.o -o TIDLSAnalyzer
 
 main.o: main.cpp
 	g++ -c main.cpp

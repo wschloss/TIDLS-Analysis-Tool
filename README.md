@@ -1,44 +1,47 @@
-PHGN481
-=======
+<h1>PHGN481</h1>
+<hr>
 
-Senior Project - TIDLS Software
+<h1>Senior Project - TIDLS Software</h1>
 
+<hr>
+<h2>Prototype tasks</h2>
+<hr>
 
--------------------
-Prototype tasks
--------------------
+<h3>Complete</h3>
+<hr>
 
-Complete
--------------------
+<p>FUNCTIONALITY:</p>
+<ul>
+<li>Basic user interaction</li>
+<li>Constants can be loaded from a text file</li>
+<li>Lifetime data can be loaded from a text file</li>
+<li>All necessary equation definitions are available for use</li>
+<li>Simulated lifetime data can be generated and exported to a text file</li>
+</ul>
 
-FUNCTIONALITY:
-- Basic user interaction
-- Constants can be loaded from a text file
-- Lifetime data can be loaded from a text file
-- All necessary equation definitions should be available for use (Eqns used for simulated data are done)
-- Simulated lifetime data can be generated and exported to a text file
+<hr>
+<h3>Todo</h3>
+<hr>
 
-GUI:
--Basic layout created
+<p>FUNCTIONALITY:</p>
+<ul>
+<li> <strong>DEBUGGING:</strong> Loaded data can be analyzed and data for tn0, k, and chi^2 is exported</li>
+</ul>
 
--------------------------
-Todo
--------------------------
+<p>GUI:</p>
+<ul>
+	<li>Create a layout</li>
+<li>Link GUI buttons to our implemented functionality</li>
+<li>Begin drawing of graphs after analyzing has been debugged</li>
+</ul>
 
-FUNCTIONALITY:
-- Add additional equations necessary for fitting
-- Loaded data can be analyzed and data for tn0, k, and chi^2 is exported
-	-many possible subtasks here
-
-GUI:
--Link GUI buttons to our implemented functionality
--Begin drawing of graphs after analyzing has been implemented
-
--------------------------
-Known issues
--------------------------
-- When loading data after a previous set of constants/data were loaded
+<hr>
+<h3>Known issues</h3>
+<hr>
+<ul>
+<li>When loading data after a previous set of constants/data were loaded
 	in the same session, the previous data is flushed for the new
 	set of constants/data.  This may be undesirable behavior in the
-	future.
-- No validation of input values, some values passed to the generator will create an infinite loop.
+	future.</li>
+<li>No validation of input values, some values passed to the generator will create an infinite loop.</li>
+</ul>
