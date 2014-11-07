@@ -1,6 +1,6 @@
 #include "Generator.h"
 
-Generator::Generator(map<string,double> constantsMap) {
+Generator::Generator(map<string,double>& constantsMap) {
 	equations = new EquationManager(constantsMap);
 
 	NA = 0;

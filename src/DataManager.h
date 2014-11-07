@@ -24,8 +24,8 @@ class DataManager {
 		void loadConstants();
 		void loadData();
 
-		map<string,double> getConstants() {return constants;}
-		vector< vector<double> > getData() {return lifetimeData;}
+		map<string,double>& getConstants() {return constants;}
+		vector< vector<double> >& getData() {return lifetimeData;}
 
 	private:
 		Loader* loader;

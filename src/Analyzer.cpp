@@ -3,16 +3,21 @@
 
 //I have no idea why this is necessary
 //but it doesn't work without it
-vector<real> Analyzer::data, Analyzer::deltaN;
+vector<real>* Analyzer::data, * Analyzer::deltaN;
 real Analyzer::Et, Analyzer::temp, Analyzer::NA;
 EquationManager* Analyzer::equations;
 const int Analyzer::one;
 
 
-Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > lifetimeData) {
+Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& lifetimeData) {
 	equations = new EquationManager(constantsMap);
+
+	//Init vector pointers
+	data = NULL;
+	deltaN = NULL;
+
 	NA = 10e16;
-	deltaN = lifetimeData[0];
+	deltaN = &lifetimeData[0];
 
 	EtIt = 100;
 	// Number of temperatures (plus deltaN)
@@ -28,7 +33,8 @@ Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > li
 
 		//iterate over each Et
 		for (int j = 0; j < EtIt; j++) {
-			data = lifetimeData[i];
+			data = &lifetimeData[i];
+
 			runFit();
 
 			cout << "Ran a fit. " << endl;
@@ -40,8 +46,8 @@ Analyzer::Analyzer(map<string, double> constantsMap, vector< vector<double> > li
 			// sum of (observed - expected)^2 / expected
 			chi2 = 0;
 			for (int z = 0; z < m; z++) {
-				double expected = tSRH(x, deltaN[z], Et);
-				double numerator = (data[z] - expected);
+				double expected = tSRH(x, deltaN->at(z), Et);
+				double numerator = (data->at(z) - expected);
 				chi2 += numerator * numerator / expected;
 			}
 			
@@ -74,7 +80,7 @@ void Analyzer::runFit()
 {
 	
 
-	m = data.size(); // number of functions (tau_SRH data)
+	m = data->size(); // number of functions (tau_SRH data)
 	n = 2; // number of variables (parameters)
 
 	fvec = new real[m];
@@ -136,18 +142,18 @@ void Analyzer::runFit()
 	printf("\n");
 	*/
 
-	/*
+	
 	if (fvec != NULL) {
-		delete fvec;
+		delete [] fvec;
 	}
 	if (fjac != NULL) {
-		delete fjac;
+		delete [] fjac;
 	}
 	if (wa4 != NULL) {
-		delete wa4;
+		delete [] wa4;
 	}
-	*/
-	delete [] fvec, fjac, wa4;
+	
+	//delete [] fvec, fjac, wa4;
 
 }
 
@@ -165,7 +171,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	for (int i = 0; i < *m; i++) {
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
 		cout << "Is it m? " << endl;
-		fvec[i] = data[i] - tSRH(x, deltaN[i], Et);
+		fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
 		cout << "Is it fvec? " << endl;
 	}
 	cout << "fcn called. " << endl;

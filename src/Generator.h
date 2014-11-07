@@ -20,7 +20,7 @@ using namespace std;
 
 class Generator {
 public:
-	Generator(map<string,double> constantsMap);
+	Generator(map<string,double>& constantsMap);
 	void promptForDefectProperties();
 	void promptForRangeProperties();
 	void generateData();
