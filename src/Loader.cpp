@@ -64,6 +64,14 @@ void Loader::importDataFromFile(const string &fileName, vector< vector<double> >
 		tokens.push_back(buffer);
 	}
 
+
+	/*
+	Possible error here:
+	Pushing back m elements because the first line of text has m
+	but not guarenteed we have m different data points since we could
+	have an arbitrary number of different temp points
+	*/
+
 	// number of elements in a line
 	int m = tokens.size();
 	// fill in the 2-d vector with empty columns, so that we can assign values later

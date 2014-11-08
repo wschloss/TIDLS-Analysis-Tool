@@ -38,6 +38,7 @@ public:
 
 private:
 	// Variables necessary to define a defect
+	//static 3
 	static EquationManager* equations;
 	static vector<real>* data, *deltaN;
 	static real NA, temp, Et;
@@ -55,7 +56,7 @@ private:
 	int m, n, maxfev, mode, nprint, info, nfev, ldfjac, iflag;
 	int ipvt[2];
 	real ftol, xtol, gtol, epsfcn, factor, fnorm;
-	real x[2], diag[2], qtf[2], wa1[2], wa2[2], wa3[2], *fvec, *fjac, *wa4;
+	real *x, diag[2], qtf[2], wa1[2], wa2[2], wa3[2], *fvec, *fjac, *wa4;
 	//This is definitely what makes this code professional
 	static const int one = 1;
 	real covfac;

@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
 
 	cout << endl;
 	cout << "/********* TIDLS Analyzer *********/" << endl;
-
+	
 	// Main loop
 	while(!done) {
 		// Prompt user to select option

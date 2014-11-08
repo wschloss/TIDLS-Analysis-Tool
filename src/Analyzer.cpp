@@ -1,8 +1,6 @@
 #include "Analyzer.h"
 
 
-//I have no idea why this is necessary
-//but it doesn't work without it
 vector<real>* Analyzer::data, * Analyzer::deltaN;
 real Analyzer::Et, Analyzer::temp, Analyzer::NA;
 EquationManager* Analyzer::equations;
@@ -12,9 +10,13 @@ const int Analyzer::one;
 Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& lifetimeData) {
 	equations = new EquationManager(constantsMap);
 
-	//Init vector pointers
+	//Init pointers
 	data = NULL;
 	deltaN = NULL;
+	fvec = NULL;
+	fjac = NULL;
+	wa4 = NULL;
+	x = new real[2];
 
 	NA = 10e16;
 	deltaN = &lifetimeData[0];
@@ -35,9 +37,9 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		for (int j = 0; j < EtIt; j++) {
 			data = &lifetimeData[i];
 
+			cout << "Beginning a fit\n";
 			runFit();
-
-			cout << "Ran a fit. " << endl;
+			cout << "Ran a fit successfully\n";
 
 			tn0 = x[0];
 			k = x[1];
@@ -50,7 +52,6 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 				double numerator = (data->at(z) - expected);
 				chi2 += numerator * numerator / expected;
 			}
-			
 			// Put these into arrays for later use
 			tempVec.push_back(temp);
 			EtVec.push_back(Et);
@@ -63,7 +64,7 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 
 		}
 
-		cout << "FINISHED A TEMPERATURE! " << endl;
+		cout << "FINISHED A TEMPERATURE!" << endl;
 	}
 
 	/*
@@ -79,7 +80,6 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 void Analyzer::runFit()
 {
 	
-
 	m = data->size(); // number of functions (tau_SRH data)
 	n = 2; // number of variables (parameters)
 
@@ -120,7 +120,7 @@ void Analyzer::runFit()
 		ipvt, qtf, wa1, wa2, wa3, wa4);
 
 	// Print Debugging Information
-	cout << info << endl;
+	//cout << info << endl;
 
 	/*
 	fnorm = __minpack_func__(enorm)(&m, fvec);
@@ -142,18 +142,20 @@ void Analyzer::runFit()
 	printf("\n");
 	*/
 
-	
+	cout << "Before deleting\n";
 	if (fvec != NULL) {
 		delete [] fvec;
+		fvec = NULL;
 	}
 	if (fjac != NULL) {
 		delete [] fjac;
+		fjac = NULL;
 	}
 	if (wa4 != NULL) {
 		delete [] wa4;
+		wa4 = NULL;
 	}
-	
-	//delete [] fvec, fjac, wa4;
+	cout << "After deleting\n";
 
 }
 
@@ -170,9 +172,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	}
 	for (int i = 0; i < *m; i++) {
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
-		cout << "Is it m? " << endl;
 		fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
-		cout << "Is it fvec? " << endl;
 	}
 	cout << "fcn called. " << endl;
 	return;
@@ -183,8 +183,6 @@ real Analyzer::tSRH(const real *x, real deltaN, real Et) {
 	real firstExpression = (equations->p0(temp, NA) + equations->p1(temp, Et) + deltaN);
 	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
 	real denominator = equations->p0(temp, NA) + equations->n0(temp, NA) + deltaN;
-
-	cout << "Is it equations? " << endl;
 
 	return x[0] * (firstExpression + (x[1] * secondExpression)) / denominator;
 }
@@ -201,13 +199,12 @@ void Analyzer::printDataToFile() {
 		cerr << "\nError creating export file.\n";
 		exit(1);
 	}
-	output << "Temperature,Et,tn0,k,chi2" << endl;
+	output << "Temperature, Et, tn0, k, chi2" << endl;
 
 	// Print out the data vectors created earlier
 	for (int i = 0; i < EtIt; i++) {
-		output << tempVec[i] << "," << EtVec[i] << "," << tn0Vec[i] << "," << kVec[i] << "," << chi2Vec[i] << endl;
+		output << tempVec[i] << ", " << EtVec[i] << ", " << tn0Vec[i] << ", " << kVec[i] << ", " << chi2Vec[i] << endl;
 	}
-
 
 	output.close();
 }
