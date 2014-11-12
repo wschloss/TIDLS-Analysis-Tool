@@ -16,7 +16,10 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 	fvec = NULL;
 	fjac = NULL;
 	wa4 = NULL;
+	//tau and k guess init
 	x = new real[2];
+	x[0] = 1;
+	x[1] = 1;
 
 	NA = 10e16;
 	deltaN = &lifetimeData[0];
@@ -33,9 +36,11 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		gap = 1.6;
 		inc = gap / EtIt;
 
-		//iterate over each Et
+		//Data at this temp
+		data = &lifetimeData[i];
+
+		//iterate over each Et through the band gap
 		for (int j = 0; j < EtIt; j++) {
-			data = &lifetimeData[i];
 
 			cout << "Beginning a fit\n";
 			runFit();
@@ -43,7 +48,7 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 
 			tn0 = x[0];
 			k = x[1];
-
+			
 			// Find chi^2 value for the fit
 			// sum of (observed - expected)^2 / expected
 			chi2 = 0;
@@ -52,12 +57,15 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 				double numerator = (data->at(z) - expected);
 				chi2 += numerator * numerator / expected;
 			}
+			
 			// Put these into arrays for later use
+			
 			tempVec.push_back(temp);
 			EtVec.push_back(Et);
 			tn0Vec.push_back(tn0);
 			kVec.push_back(k);
 			chi2Vec.push_back(chi2);
+			
 
 			// Increment Et
 			Et += inc;
@@ -115,9 +123,16 @@ void Analyzer::runFit()
 	factor = 1.e2; // initial step bound, ""
 	nprint = 0; // controlled printing, ""
 
+
+	//THE ERROR IS IN THIS CALL
+	//My guess is one of the arguments is incorrect
+	//could be wrong dimension, or a pointer when it expects a static variable
+	//or a static when it expects a pointer
+	/*
 	__minpack_func__(lmdif)(&fcn, &m, &n, x, fvec, &ftol, &xtol, &gtol, &maxfev, &epsfcn,
 		diag, &mode, &factor, &nprint, &info, &nfev, fjac, &ldfjac,
 		ipvt, qtf, wa1, wa2, wa3, wa4);
+	*/
 
 	// Print Debugging Information
 	//cout << info << endl;
@@ -142,7 +157,7 @@ void Analyzer::runFit()
 	printf("\n");
 	*/
 
-	cout << "Before deleting\n";
+	
 	if (fvec != NULL) {
 		delete [] fvec;
 		fvec = NULL;
@@ -155,7 +170,6 @@ void Analyzer::runFit()
 		delete [] wa4;
 		wa4 = NULL;
 	}
-	cout << "After deleting\n";
 
 }
 
@@ -164,7 +178,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 
 	/*      subroutine fcn for lmdif (User Guide p. 124 */
 	assert(*n == 2);
-	cout << "Calling fcn. " << endl;
+	//cout << "Calling fcn. " << endl;
 	if (*iflag == 0)
 	{
 		/*      insert print statements here when nprint is positive. */
@@ -174,7 +188,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
 		fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
 	}
-	cout << "fcn called. " << endl;
+	//cout << "fcn called. " << endl;
 	return;
 }
 
