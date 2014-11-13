@@ -17,6 +17,7 @@
 	<li>Lifetime data can be loaded from a text file</li>
 	<li>All necessary equation definitions are available for use</li>
 	<li>Simulated lifetime data can be generated and exported to a text file</li>
+	<li>Loaded data can be analyzed and data for tn0, k, and chi^2 is exported</li>
 </ul>
 
 <hr>
@@ -25,7 +26,9 @@
 
 <p>FUNCTIONALITY:</p>
 <ul>
-	<li> <strong>DEBUGGING:</strong> Loaded data can be analyzed and data for tn0, k, and chi^2 is exported</li>
+		<li>Fix export of analysis data to print all values calculated</li>
+		<li>Begin testing analyzer on generated data to check correctness</li>
+		<li>Write some simple plotting utilities to export plots and make checking correctness easier</li>
 </ul>
 
 <p>GUI:</p>
@@ -44,4 +47,5 @@
 		set of constants/data.  This may be undesirable behavior in the
 		future.</li>
 		<li>No validation of input values, some values passed to the generator will create an infinite loop.</li>
+		<li>After analysis and data generation, memory used for data is not released.  Analyzer/Generator should be deleted after use</li>
 	</ul>

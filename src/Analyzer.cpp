@@ -42,9 +42,9 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		//iterate over each Et through the band gap
 		for (int j = 0; j < EtIt; j++) {
 
-			cout << "Beginning a fit\n";
+			//cout << "Beginning a fit\n";
 			runFit();
-			cout << "Ran a fit successfully\n";
+			//cout << "Ran a fit successfully\n";
 
 			tn0 = x[0];
 			k = x[1];
@@ -92,7 +92,7 @@ void Analyzer::runFit()
 	n = 2; // number of variables (parameters)
 
 	fvec = new real[m];
-	fjac = new real[m];
+	fjac = new real[m * n];
 	wa4 = new real[m];
 
 	/*      the following starting values provide a rough fit. */
@@ -120,19 +120,14 @@ void Analyzer::runFit()
 	maxfev = 800;
 	epsfcn = 0.; // precision, refer to User Guide p. 124 (minpack)
 	mode = 1; // scaling, refer to User Guide p. 124 (minpack)
-	factor = 1.e2; // initial step bound, ""
+	factor = 100.; // initial step bound, ""
 	nprint = 0; // controlled printing, ""
 
-
-	//THE ERROR IS IN THIS CALL
-	//My guess is one of the arguments is incorrect
-	//could be wrong dimension, or a pointer when it expects a static variable
-	//or a static when it expects a pointer
-	/*
+	
 	__minpack_func__(lmdif)(&fcn, &m, &n, x, fvec, &ftol, &xtol, &gtol, &maxfev, &epsfcn,
 		diag, &mode, &factor, &nprint, &info, &nfev, fjac, &ldfjac,
 		ipvt, qtf, wa1, wa2, wa3, wa4);
-	*/
+	
 
 	// Print Debugging Information
 	//cout << info << endl;
@@ -162,10 +157,12 @@ void Analyzer::runFit()
 		delete [] fvec;
 		fvec = NULL;
 	}
+	
 	if (fjac != NULL) {
 		delete [] fjac;
 		fjac = NULL;
 	}
+
 	if (wa4 != NULL) {
 		delete [] wa4;
 		wa4 = NULL;
@@ -186,14 +183,14 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	}
 	for (int i = 0; i < *m; i++) {
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
-		fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
+		//fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
+		fvec[i] = tSRH(x, deltaN->at(i), Et) - data->at(i);
 	}
 	//cout << "fcn called. " << endl;
 	return;
 }
 
 real Analyzer::tSRH(const real *x, real deltaN, real Et) {
-	/******************* INITIAL HEAP ERROR OCCURS HERE *********************************/
 	real firstExpression = (equations->p0(temp, NA) + equations->p1(temp, Et) + deltaN);
 	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
 	real denominator = equations->p0(temp, NA) + equations->n0(temp, NA) + deltaN;
