@@ -3,8 +3,6 @@
 This class is responsible for storing data for model constants
 and data for fitting techniques.
 
-Author: Walter Schlosser
-
 */
 
 #pragma once

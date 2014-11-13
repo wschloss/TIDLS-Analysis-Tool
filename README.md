@@ -35,7 +35,7 @@
 <ul>
 	<li>Create a layout</li>
 	<li>Link GUI buttons to our implemented functionality</li>
-	<li>Begin drawing of graphs after analyzing has been debugged</li>
+	<li>Begin drawing of graphs</li>
 </ul>
 
 <hr>
@@ -46,6 +46,5 @@
 		in the same session, the previous data is flushed for the new
 		set of constants/data.  This may be undesirable behavior in the
 		future.</li>
-		<li>No validation of input values, some values passed to the generator will create an infinite loop.</li>
-		<li>After analysis and data generation, memory used for data is not released.  Analyzer/Generator should be deleted after use</li>
-	</ul>
+	<li>No validation of input values, some values passed to the generator will create an infinite loop.</li>
+</ul>

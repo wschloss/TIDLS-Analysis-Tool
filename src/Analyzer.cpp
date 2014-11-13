@@ -42,9 +42,7 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		//iterate over each Et through the band gap
 		for (int j = 0; j < EtIt; j++) {
 
-			//cout << "Beginning a fit\n";
 			runFit();
-			//cout << "Ran a fit successfully\n";
 
 			tn0 = x[0];
 			k = x[1];
@@ -132,26 +130,6 @@ void Analyzer::runFit()
 	// Print Debugging Information
 	//cout << info << endl;
 
-	/*
-	fnorm = __minpack_func__(enorm)(&m, fvec);
-
-	printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
-	printf("      number of function evaluations%10i\n\n", nfev);
-	printf("      exit parameter                %10i\n\n", info);
-	printf("      final approximate solution\n");
-	for (int j = 1; j <= n; j++) printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)x[j - 1]);
-	printf("\n");
-	ftol = __minpack_func__(dpmpar)(&one);
-	covfac = fnorm*fnorm / (m - n);
-	__minpack_func__(covar)(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
-	printf("      covariance\n");
-	for (int i = 1; i <= n; i++) {
-	for (int j = 1; j <= n; j++)
-	printf("%s%15.7g", j % 3 == 1 ? "\n     " : "", (double)fjac[(i - 1)*ldfjac + j - 1] * covfac);
-	}
-	printf("\n");
-	*/
-
 	
 	if (fvec != NULL) {
 		delete [] fvec;
@@ -175,7 +153,6 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 
 	/*      subroutine fcn for lmdif (User Guide p. 124 */
 	assert(*n == 2);
-	//cout << "Calling fcn. " << endl;
 	if (*iflag == 0)
 	{
 		/*      insert print statements here when nprint is positive. */
@@ -186,7 +163,6 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 		//fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
 		fvec[i] = tSRH(x, deltaN->at(i), Et) - data->at(i);
 	}
-	//cout << "fcn called. " << endl;
 	return;
 }
 
@@ -198,6 +174,8 @@ real Analyzer::tSRH(const real *x, real deltaN, real Et) {
 	return x[0] * (firstExpression + (x[1] * secondExpression)) / denominator;
 }
 
+
+//FIX TO PRINT ALL DATA OBTAINED
 void Analyzer::printDataToFile() {
 	// Ask for file name
 	string filename;
