@@ -4,7 +4,7 @@
 vector<real>* Analyzer::data, * Analyzer::deltaN;
 real Analyzer::Et, Analyzer::temp, Analyzer::NA;
 EquationManager* Analyzer::equations;
-const int Analyzer::one;
+//const int Analyzer::one;
 
 
 Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& lifetimeData) {
@@ -40,7 +40,7 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		data = &lifetimeData[i];
 
 		//iterate over each Et through the band gap
-		for (int j = 0; j < EtIt; j++) {
+		for (int j = 0; j <= EtIt; j++) {
 
 			runFit();
 
@@ -191,7 +191,7 @@ void Analyzer::printDataToFile() {
 	output << "Temperature, Et, tn0, k, chi2" << endl;
 
 	// Print out the data vectors created earlier
-	for (int i = 0; i < EtIt; i++) {
+	for (int i = 0; i < tempVec.size(); i++) {
 		output << tempVec[i] << ", " << EtVec[i] << ", " << tn0Vec[i] << ", " << kVec[i] << ", " << chi2Vec[i] << endl;
 	}
 

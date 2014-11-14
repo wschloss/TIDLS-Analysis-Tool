@@ -26,7 +26,6 @@
 
 <p>FUNCTIONALITY:</p>
 <ul>
-		<li>Fix export of analysis data to print all values calculated</li>
 		<li>Begin testing analyzer on generated data to check correctness</li>
 		<li>Write some simple plotting utilities to export plots and make checking correctness easier</li>
 </ul>
