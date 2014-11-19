@@ -52,7 +52,7 @@ public:
 
 		double result = 0;
 
-		result = m0 * pow(6.0,2.0/3.0) * pow(pow(see * (Egap0)/(Egap(temp)),2.0) * ml/m0,1.0/3.0);
+		result = m0 * pow(6.0,2.0/3.0) * pow(pow(see * (Egap0)/(Egap(temp)),2.0) * ml,1.0/3.0);
 
 		return result;
 
@@ -176,7 +176,7 @@ public:
 		*/
 		double vthe0 = constants["vthe0"];
 
-		return vthe0 * pow(temp,1.0/2.0);
+		return vthe0 * pow(temp/300.0,1.0/2.0);
 	}
 
 	double vthh(double temp) {
@@ -186,7 +186,7 @@ public:
 		*/
 		double vthh0 = constants["vthh0"];
 
-		return vthh0 * pow(temp,1.0/2.0);
+		return vthh0 * pow(temp/300.0,1.0/2.0);
 	}
 
 	/*
@@ -217,15 +217,21 @@ public:
 	}
 
 	/*
-	NOTE THAT THE FOLLOWING p AND n CONCENTRATIONS
-	DO NOT TAKE FREEZE OUT OR INTRINSIC CONDUCTION
-	PIECEWISE EXPRESSIONS INTO ACCOUNT.
+	p concentration now accounts for freeze out and intrinsic conduction.
+	(piece-wise temperature dependence: pg. 19, eq. 1.22 in the text)
 	*/	
 	double p0(double temp, double NA) {
 		/*
 		no constants defined from map
 		*/
-		return fA(temp,NA) * NA;
+		double out;
+		if (temp < 350.0) {
+			out = fA(temp, NA) * NA;
+		}
+		else {
+			out = (1.0/2.0) * (NA + pow(NA * NA + 4.0 * ni2(temp), 1.0/2.0) );
+		}
+		return out;
 	}
 
 	double n0(double temp, double NA) {
