@@ -19,14 +19,18 @@ using namespace std;
 class Generator {
 public:
 	Generator(map<string,double>& constantsMap);
-	void promptForDefectProperties();
 	void promptForRangeProperties();
-	void generateData();
+	void createDefects();
+	void promptForDefectProperties();
+	void yesNoPrompt(string query, int &choice);
+	map<double, vector<double> > generateData();
+	void createSample();
 	void printDataToFile();
 
 private:
 	EquationManager* equations;
-	map<double,vector<double> > generatedData;
+	vector<map<double, vector<double> > > generatedData;
+	map<double, vector<double> > finalData;
 	// Variables necessary to define a defect for data generation
 	double NA, Nt, Et, sigmaN, sigmaP;
 	// Define range of data generation
@@ -35,4 +39,6 @@ private:
 	double minTemp;
 	double maxTemp;
 	double tempStep;
+	// List of defect files used
+	vector<string> defectsList;
 };
