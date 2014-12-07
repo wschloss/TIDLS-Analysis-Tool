@@ -38,16 +38,18 @@ private:
 	static EquationManager* equations;
 	static vector<real>* data, *deltaN;
 	static real NA, temp, Et;
-	// Energy gap at current temp
-	double gap;
+	// Ec at current temp
+	double max;
+	// Ev at current temp
+	double min;
+	// Energy iterations
+	int EtIt;
 	// Increase in Et per iteration
 	double inc;
 	// Outputs
 	double tn0, k, chi2;
 	// Vectors with final data output
 	vector<double> tempVec, EtVec, tn0Vec, kVec, chi2Vec;
-	// Energy iterations
-	int EtIt;
 	// Variables necessary for the lmdif (Levenberg–Marquardt algorithm):
 	int m, n, maxfev, mode, nprint, info, nfev, ldfjac, iflag;
 	int ipvt[2];

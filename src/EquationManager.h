@@ -52,7 +52,7 @@ public:
 
 		double result = 0;
 
-		result = m0 * pow(6.0,2.0/3.0) * pow(pow(see * (Egap0)/(Egap(temp)),2.0) * ml,1.0/3.0);
+		result = m0 * pow(6.0, 2.0 / 3.0) * pow(pow(see * (Egap0) / (Egap(temp)), 2.0) * ml / m0, 1.0 / 3.0);
 
 		return result;
 
@@ -176,7 +176,7 @@ public:
 		*/
 		double vthe0 = constants["vthe0"];
 
-		return vthe0 * pow(temp/300.0,1.0/2.0);
+		return vthe0 * pow(temp, 1.0 / 2.0);
 	}
 
 	double vthh(double temp) {
@@ -186,7 +186,7 @@ public:
 		*/
 		double vthh0 = constants["vthh0"];
 
-		return vthh0 * pow(temp/300.0,1.0/2.0);
+		return vthh0 * pow(temp, 1.0 / 2.0);
 	}
 
 	/*

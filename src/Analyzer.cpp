@@ -18,10 +18,10 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 	wa4 = NULL;
 	//tau and k guess init
 	x = new real[2];
-	x[0] = 1;
-	x[1] = 1;
+	x[0] = 10.0e-06; // tn0
+	x[1] = 1; // k
 
-	NA = 10e16;
+	NA = 1e16;
 	deltaN = &lifetimeData[0];
 
 	EtIt = 100;
@@ -30,11 +30,12 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 
 	// iterate over each temperature
 	for (int i = 1; i < tempLength; i++) {
-		Et = 0;
 		temp = i * 100; // x100 for [100C,200C,300C...]
+		min = equations->Ev(temp);
+		max = equations->Ec(temp);
+		inc = (max-min) / EtIt;
 
-		gap = 1.6;
-		inc = gap / EtIt;
+		Et = min;
 
 		//Data at this temp
 		data = &lifetimeData[i];
