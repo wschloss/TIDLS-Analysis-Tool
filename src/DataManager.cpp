@@ -16,9 +16,9 @@ void DataManager::loadConstants() {
 	// prompt user for file name
 	string fileName;
 	cout << "\nEnter the file name containing values for constants (or 0 to skip): ";
-	//cin.sync()
-	getline(cin,fileName); //Consume \n char, cin.sync() is being weird right now
-	getline(cin, fileName);
+	getline(cin, fileName); //Consume \n char, cin.sync() is being weird right now
+
+	loadFile(fileName);
 
 	if (fileName == "0") {
 		cout << "\nNo values for constants were loaded.\n";
@@ -40,11 +40,11 @@ void DataManager::loadData() {
 	// prompt user for file name
 	string fileName;
 	cout << "\nEnter the file name containing data for lifetime values (or 0 to skip): ";
-	cin.sync();
-	getline(cin, fileName);
+	
+	loadFile(fileName);
 
 	if (fileName == "0") {
-		cout << "\nNo lifetime data was loaded.\n";
+		cout << "\nNo data for lifetimes were loaded.\n";
 		return;
 	}
 
@@ -63,6 +63,21 @@ void DataManager::loadData() {
 			cout << "t" << j << " = " << lifetimeData[j][i] << ", ";
 		}
 		cout << endl;
+	}
+
+}
+
+void DataManager::loadFile(string &fileName) {
+	//cin.sync()
+	getline(cin, fileName); //Consume \n char
+
+	if (fileName == "0") { return; }
+
+	ifstream ifile(fileName);
+	if (!ifile) {
+		cerr << "Error opening file: " << fileName << endl;
+		cout << "\nPlease enter the correct file name (or 0 to skip): ";
+		loadFile(fileName);
 	}
 
 }

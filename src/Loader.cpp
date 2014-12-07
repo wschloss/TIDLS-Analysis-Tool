@@ -6,10 +6,6 @@ Loader::Loader() {
 void Loader::importConstantsFromFile(const string &fileName, map<string,double> &dataMap) {
 	// Open file, read data, store in map
 	ifstream input(fileName);
-	if (!input) {
-		cerr << "Error opening file: " << fileName << "\n";
-		exit(1);
-	}
 
 	// line and buffer string
 	string definition, buffer;
@@ -42,10 +38,6 @@ void Loader::importConstantsFromFile(const string &fileName, map<string,double> 
 void Loader::importDataFromFile(const string &fileName, vector< vector<double> > &lifetimeData) {
 	// Open file, read data, sort data into a multidimensional vector
 	ifstream input(fileName);
-	if (!input) {
-		cerr << "Error opening file: " << fileName << "\n";
-		exit(1);
-	}
 
 	// line and buffer string
 	string definition, buffer;

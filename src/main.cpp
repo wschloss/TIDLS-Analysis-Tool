@@ -35,6 +35,11 @@ int main(int argc, char const *argv[]) {
 			cout << endl;
 			cout << "Select an option: ";
 			cin >> choice;
+			if (cin.fail()){
+				cin.clear();
+				cin.ignore(100, '\n'); //ignore 100 characters or get to the end of the line.
+				cout << "\nInput failed, try again:" << endl;
+			}
 		}
 		// Perform desired operations
 		switch(choice) {

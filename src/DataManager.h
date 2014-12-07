@@ -21,6 +21,7 @@ public:
 
 	void loadConstants();
 	void loadData();
+	void loadFile(string &fileName);
 
 	map<string,double>& getConstants() {return constants;}
 	vector< vector<double> >& getData() {return lifetimeData;}
