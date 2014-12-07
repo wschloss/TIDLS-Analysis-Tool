@@ -54,37 +54,39 @@ void Loader::importDataFromFile(const string &fileName, vector< vector<double> >
 	// vector of the resulting tokens
 	vector<string> tokens;
 
-	//THROWS OUT FIRST LINE OF TXT
-	getline(input, definition);
+	// data begins at this line number (first line = 1)
+	unsigned int startLine = 2;
+	// Gets the specified line of text
+	for (unsigned int i = 1; i <= startLine; i++) {
+		getline(input, definition);
+	}
 
-	// stream of first line
+	// stream of specified line
 	stream = new stringstream(definition);
 	// split line
 	while (*stream >> buffer) {
 		tokens.push_back(buffer);
 	}
-
-
-	/*
-	Possible error here:
-	Pushing back m elements because the first line of text has m
-	but not guarenteed we have m different data points since we could
-	have an arbitrary number of different temp points
-	*/
-
+	
 	// number of elements in a line
-	int m = tokens.size();
-	// fill in the 2-d vector with empty columns, so that we can assign values later
-	for (int i = 0; i < m; i++) {
-		vector<double> column;
+	int startLength = tokens.size();
+	// empty vector for creating columns
+	vector<double> column;
+	// fill in the 2-d vector with empty columns, and fill in the first row with data
+	for (int i = 0; i < startLength; i++) {
 		lifetimeData.push_back(column);
+		lifetimeData[i].push_back(atof(tokens[i].c_str()));
 	}
-
+	
 	tokens.clear();
+
+	// line number being taken from the file
+	unsigned int lineNum = startLine;
 
 	// Sorts data into vectors categorized by temps, with the first vector being deltaN
 	// i.e. { {deltaN1, deltaN2,...}, {temp11, temp12,...}, {temp21, temp22,...},... }
 	while (getline(input, definition)) {
+		lineNum++;
 		if (stream != NULL)
 			delete stream;
 		// stream of new line
@@ -94,14 +96,24 @@ void Loader::importDataFromFile(const string &fileName, vector< vector<double> >
 			tokens.push_back(buffer);
 		}
 
-		m = tokens.size();
+		/*
+		For now I'm cutting out any line that is not the same length as the first 
+		line (of data - not any headers). We may need to make adjustments in the future,
+		but first let's see what type of data files the lifetime tester puts out.
+		*/
 
-		// add data to the columns of the multidimensional vector
-		for (int i = 0; i < m; i++) {
-			lifetimeData[i].push_back( atof(tokens[i].c_str()) );
+		// if this line is the same length as the original starting line
+		if (tokens.size() == startLength) {
+			// add data to the columns of the multidimensional vector
+			for (int i = 0; i < startLength; i++) {
+				lifetimeData[i].push_back(atof(tokens[i].c_str()));
+			}
+		}
+
+		else {
+			cout << "\nLine Skipped: Line " << lineNum << " is not the same length as line " << startLine << endl;
 		}
 		
-		// For the next line, we clear the tokens and increase k
 		tokens.clear();
 	}
 
