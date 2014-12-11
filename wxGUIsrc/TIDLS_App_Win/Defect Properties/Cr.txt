@@ -1,0 +1,6 @@
+Columns are: NA, Nt, Et, sigmaN, sigmaP
+1e16
+4.5e13
+0.24
+2e-14
+4e-15

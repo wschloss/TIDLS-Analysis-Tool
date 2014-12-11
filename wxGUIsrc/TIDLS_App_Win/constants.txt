@@ -1,0 +1,23 @@
+The format is currently: Name value (this first line is thrown out)
+Egap0 1.17
+alpha 4.73e-4
+beta 636
+m0 .510998910e6
+see .1905
+ml .9163
+a .4435870
+b .3609528e-2
+c .1173515e-3
+d .1263218e-5
+e .3025581e-8
+f .4683382e-2
+g .2286895e-3
+h .7469271e-6
+i .1727481e-8
+NN 2.541e19
+Ev0 0
+Ec0 1.17
+EABoron .045
+kb 8.6173e-5
+vthe0 10e7
+vthh0 10e7
