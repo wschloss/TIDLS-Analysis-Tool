@@ -62,6 +62,23 @@
 #pragma interface "mathplot.h"
 #endif
 
+/*
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/window.h>
+#include "wx/object.h"
+#include "wx/font.h"
+#include "wx/colour.h"
+#include "wx/settings.h"
+#include "wx/sizer.h"
+#include "wx/log.h"
+#include "wx/intl.h"
+#include "wx/dcclient.h"
+#include "wx/cursor.h"
+#endif
+*/
+
 #include <vector>
 
 // #include <wx/wx.h>
