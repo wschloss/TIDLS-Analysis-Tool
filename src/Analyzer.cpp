@@ -4,7 +4,7 @@
 vector<real>* Analyzer::data, * Analyzer::deltaN;
 real Analyzer::Et, Analyzer::temp, Analyzer::NA;
 EquationManager* Analyzer::equations;
-//const int Analyzer::one;
+const int Analyzer::one;
 
 
 Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& lifetimeData) {
@@ -28,9 +28,16 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 	// Number of temperatures (plus deltaN)
 	int tempLength = lifetimeData.size();
 
+	//Hard coded temps that we got from the data
+	// These are in celsius
+	double temperatures[15] = {190, 180, 170, 155, 145, 135, 125, 110, 100, 90,
+								80, 65, 55, 45, 35};
+
 	// iterate over each temperature
 	for (int i = 1; i < tempLength; i++) {
-		temp = i * 100; // x100 for [100C,200C,300C...]
+		//temp = i * 100; // x100 for [100C,200C,300C...]
+		temp = 273 + temperatures[i - 1]; //temps in kelvin
+
 		min = equations->Ev(temp);
 		max = equations->Ec(temp);
 		inc = (max-min) / EtIt;

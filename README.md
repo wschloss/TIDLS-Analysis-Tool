@@ -9,32 +9,23 @@
 
 <h3>Complete</h3>
 <hr>
-
-<p>FUNCTIONALITY:</p>
 <ul>
 	<li>Basic user interaction</li>
 	<li>Constants can be loaded from a text file</li>
 	<li>Lifetime data can be loaded from a text file</li>
 	<li>All necessary equation definitions are available for use</li>
-	<li>Simulated lifetime data can be generated and exported to a text file</li>
+	<li>Simulated lifetime data can be generated and exported to a text file for one or more defect txt files</li>
 	<li>Loaded data can be analyzed and data for tn0, k, and chi^2 is exported</li>
 </ul>
 
 <hr>
 <h3>Todo</h3>
 <hr>
-
-<p>FUNCTIONALITY:</p>
 <ul>
-		<li>Begin testing analyzer on generated data to check correctness</li>
-		<li>Write some simple plotting utilities to export plots and make checking correctness easier</li>
-</ul>
-
-<p>GUI:</p>
-<ul>
-	<li>Create a layout</li>
-	<li>Link GUI buttons to our implemented functionality</li>
-	<li>Begin drawing of graphs</li>
+    <li>Read temperatures used in data collection from file</li>
+    <li>Change data reading/analysis to incorporate multiple deltaN values, the data collection process does not hold deltaN constant enough while temperature is changed</li>
+    <li>Change generated data output to match any changes made in the data reading format</li>
+    <li>Write/Use some plotting utilities</li>
 </ul>
 
 <hr>

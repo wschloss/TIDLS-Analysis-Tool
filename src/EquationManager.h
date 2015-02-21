@@ -176,7 +176,13 @@ public:
 		*/
 		double vthe0 = constants["vthe0"];
 
+		/*
+		This is the correct expression, but has been overriden
+		to determine the cause of the diffuse intersection.
+
 		return vthe0 * pow(temp, 1.0 / 2.0);
+		*/
+		return vthe0 * pow(300.0, 1.0 / 2.0);
 	}
 
 	double vthh(double temp) {
@@ -186,7 +192,13 @@ public:
 		*/
 		double vthh0 = constants["vthh0"];
 
+		/*
+		This is the correct expression, but has been overriden
+		to determine the cause of the diffuse intersection.
+
 		return vthh0 * pow(temp, 1.0 / 2.0);
+		*/
+		return vthh0 * pow(300.0, 1.0 / 2.0);
 	}
 
 	/*
