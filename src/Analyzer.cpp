@@ -30,7 +30,7 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 	//Hard coded temps that we got from the data
 	// These are in celsius
 	double temperatures[15] = {190, 180, 170, 160, 145, 135, 125, 115, 105, 95,
-								80, 70, 60, 50, 36};
+								80, 70, 60, 50, 35};
 
 	// iterate over each temperature
 	for (int i = 0; i < dataPairs/2; i++) {
