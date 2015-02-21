@@ -36,7 +36,7 @@ private:
 	// Variables necessary to define a defect
 	//static 3
 	static EquationManager* equations;
-	static vector<real>* data, *deltaN;
+	static vector<real>* deltaN_data, *tn0_data;
 	static real NA, temp, Et;
 	// Ec at current temp
 	double max;

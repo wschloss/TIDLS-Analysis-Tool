@@ -1,7 +1,7 @@
 #include "Analyzer.h"
 
 
-vector<real>* Analyzer::data, * Analyzer::deltaN;
+vector<real>* Analyzer::deltaN_data, * Analyzer::tn0_data;
 real Analyzer::Et, Analyzer::temp, Analyzer::NA;
 EquationManager* Analyzer::equations;
 const int Analyzer::one;
@@ -11,8 +11,8 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 	equations = new EquationManager(constantsMap);
 
 	//Init pointers
-	data = NULL;
-	deltaN = NULL;
+	deltaN_data = NULL;
+	tn0_data = NULL;
 	fvec = NULL;
 	fjac = NULL;
 	wa4 = NULL;
@@ -22,21 +22,19 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 	x[1] = 1; // k
 
 	NA = 1e16;
-	deltaN = &lifetimeData[0];
 
 	EtIt = 100;
-	// Number of temperatures (plus deltaN)
-	int tempLength = lifetimeData.size();
+	// Number of deltaN,temperature data pairs taken
+	int dataPairs = lifetimeData.size();
 
 	//Hard coded temps that we got from the data
 	// These are in celsius
-	double temperatures[15] = {190, 180, 170, 155, 145, 135, 125, 110, 100, 90,
-								80, 65, 55, 45, 35};
+	double temperatures[15] = {190, 180, 170, 160, 145, 135, 125, 115, 105, 95,
+								80, 70, 60, 50, 36};
 
 	// iterate over each temperature
-	for (int i = 1; i < tempLength; i++) {
-		//temp = i * 100; // x100 for [100C,200C,300C...]
-		temp = 273 + temperatures[i - 1]; //temps in kelvin
+	for (int i = 0; i < dataPairs/2; i++) {
+		temp = 273 + temperatures[i]; //temp must be in kelvin
 
 		min = equations->Ev(temp);
 		max = equations->Ec(temp);
@@ -45,7 +43,8 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		Et = min;
 
 		//Data at this temp
-		data = &lifetimeData[i];
+		deltaN_data = &lifetimeData[2*i];
+		tn0_data = &lifetimeData[2*i + 1];
 
 		//iterate over each Et through the band gap
 		for (int j = 0; j <= EtIt; j++) {
@@ -59,8 +58,8 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 			// sum of (observed - expected)^2 / expected
 			chi2 = 0;
 			for (int z = 0; z < m; z++) {
-				double expected = tSRH(x, deltaN->at(z), Et);
-				double numerator = (data->at(z) - expected);
+				double expected = tSRH(x, deltaN_data->at(z), Et);
+				double numerator = (tn0_data->at(z) - expected);
 				chi2 += numerator * numerator / expected;
 			}
 			
@@ -81,11 +80,9 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 		cout << "FINISHED A TEMPERATURE!" << endl;
 	}
 
-	/*
 	if (equations != NULL) {
 		delete equations;
 	}
-	*/
 
 	printDataToFile();
 
@@ -94,7 +91,7 @@ Analyzer::Analyzer(map<string, double>& constantsMap, vector< vector<double> >& 
 void Analyzer::runFit()
 {
 	
-	m = data->size(); // number of functions (tau_SRH data)
+	m = tn0_data->size(); // number of functions (tau_SRH data)
 	n = 2; // number of variables (parameters)
 
 	fvec = new real[m];
@@ -168,8 +165,7 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	}
 	for (int i = 0; i < *m; i++) {
 		// Array of functions to be minimized: (observed - expected)^2/sigma^2
-		//fvec[i] = data->at(i) - tSRH(x, deltaN->at(i), Et);
-		fvec[i] = tSRH(x, deltaN->at(i), Et) - data->at(i);
+		fvec[i] = tSRH(x, deltaN_data->at(i), Et) - tn0_data->at(i);
 	}
 	return;
 }
@@ -183,7 +179,6 @@ real Analyzer::tSRH(const real *x, real deltaN, real Et) {
 }
 
 
-//FIX TO PRINT ALL DATA OBTAINED
 void Analyzer::printDataToFile() {
 	// Ask for file name
 	string filename;

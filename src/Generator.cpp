@@ -188,6 +188,7 @@ void Generator::createSample() {
 	}
 }
 
+// REWRITE TO MATCH NEW DATA FORMAT
 void Generator::printDataToFile() {
 	// Ask for file name
 	string filename;

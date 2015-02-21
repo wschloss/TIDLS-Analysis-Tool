@@ -23,8 +23,7 @@
 <hr>
 <ul>
     <li>Read temperatures used in data collection from file</li>
-    <li>Change data reading/analysis to incorporate multiple deltaN values, the data collection process does not hold deltaN constant enough while temperature is changed</li>
-    <li>Change generated data output to match any changes made in the data reading format</li>
+    <li>Change generated data output to match changes made in the data reading format</li>
     <li>Write/Use some plotting utilities</li>
 </ul>
 

@@ -76,7 +76,7 @@ void Loader::importDataFromFile(const string &fileName, vector< vector<double> >
 	unsigned int lineNum = startLine;
 
 	// Sorts data into vectors categorized by temps, with the first vector being deltaN
-	// i.e. { {deltaN1, deltaN2,...}, {temp11, temp12,...}, {temp21, temp22,...},... }
+	// i.e. { {deltaN1_temp1, deltaN2_temp1,...}, {tau1_temp1, temp2_temp1,...}, {deltaN1_temp2, deltaN2_temp2,...}, {tau1_temp2, tau2_temp2,...},... }
 	while (getline(input, definition)) {
 		lineNum++;
 		if (stream != NULL)
@@ -90,8 +90,7 @@ void Loader::importDataFromFile(const string &fileName, vector< vector<double> >
 
 		/*
 		For now I'm cutting out any line that is not the same length as the first 
-		line (of data - not any headers). We may need to make adjustments in the future,
-		but first let's see what type of data files the lifetime tester puts out.
+		line (of data - not any headers). We may need to make adjustments in the future.
 		*/
 
 		// if this line is the same length as the original starting line

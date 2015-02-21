@@ -50,10 +50,13 @@ void DataManager::loadData() {
 
 	loader->importDataFromFile(fileName, lifetimeData);
 
-	// Number of temperatures in lifetimeData (includes deltaN)
-	int tempLength = lifetimeData.size();
+	// Number of temps data taken at
+	int tempLength = lifetimeData.size()/2;
 	// Number of measurements in lifetimeData
 	int mLength = lifetimeData[0].size();
+
+
+	/* Rewrite for new data format
 
 	//PRINTS DATA IN ORIGINAL FORMAT FOR DEBUGGING
 	cout << "\nThe following data was loaded:\n " << endl;
@@ -64,6 +67,7 @@ void DataManager::loadData() {
 		}
 		cout << endl;
 	}
+	*/
 
 }
 
