@@ -170,6 +170,17 @@ void Analyzer::fcn(const int *m, const int *n, const real *x, real *fvec, int *i
 	return;
 }
 
+/*
+real Analyzer::tSRH(const real *x, real deltaN, real Et) {
+	real firstExpression = (equations->p0(temp, NA) + equations->p1(temp, Et) + deltaN);
+	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
+	real denominator = equations->p0(temp, NA) + equations->n0(temp, NA) + deltaN;
+
+	// tn0 broken down to N_t*sigmaN fit
+	return pow(x[0]*equations->vthe(temp),-1.0) * (firstExpression + (x[1] * secondExpression)) / denominator;
+}
+*/
+
 real Analyzer::tSRH(const real *x, real deltaN, real Et) {
 	real firstExpression = (equations->p0(temp, NA) + equations->p1(temp, Et) + deltaN);
 	real secondExpression = (equations->n0(temp, NA) + equations->n1(temp, Et) + deltaN);
