@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Analyzer.h"
-#include "Generator.h"
-#include "Loader.h"
-#include "DataManager.h"
+#include "Analyzer/Analyzer.h"
+#include "Generator/Generator.h"
+#include "Loader/Loader.h"
+#include "DataManager/DataManager.h"
 
 using namespace std;
 
